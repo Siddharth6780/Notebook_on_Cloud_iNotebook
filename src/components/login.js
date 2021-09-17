@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
-const Login = () => {
+const Login = (props) => {
   const [credentials, setcredentials] = useState({ email: "", password: "" });
   let history = useHistory();
   const handleSummit = async (e) => {
@@ -22,8 +22,9 @@ const Login = () => {
       //redirect
       localStorage.setItem("token", json.authtoken);
       history.push("/");
+      props.showAlert("Logged in successfully", "success");
     } else {
-      alert("Wrong");
+      props.showAlert("Invalid Deatils", "danger");
     }
   };
 
@@ -32,7 +33,7 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <div className="container my-3">
       <form onSubmit={handleSummit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">

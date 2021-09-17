@@ -59,6 +59,7 @@ router.post(
     body("password", "It cannot be blanck").exists(),
   ],
   async (req, res) => {
+    let success = false;
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ success, errors: errors.array() });
@@ -91,12 +92,14 @@ router.post(
 
 //Get user details
 router.post("/getuser", fetchuser, async (req, res) => {
+  let success = false;
   try {
     userId = req.user.id;
     const user = await User.findById(userId).select("-password");
-    res.send(user);
+    success = true;
+    res.send(success, user);
   } catch (error) {
-    res.status(500).send("Some Error occured");
+    res.status(500).send(success, "Some Error occured");
   }
 });
 
