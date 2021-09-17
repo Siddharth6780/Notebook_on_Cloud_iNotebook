@@ -33,7 +33,10 @@ const Login = (props) => {
   };
 
   return (
-    <div className="container my-3">
+    <div className="container mt-2">
+      <div className="heading_container d-flex justify-content-around">
+        <h2>Login to continue to iNotebook</h2>
+      </div>
       <form onSubmit={handleSummit}>
         <div className="mb-3">
           <label htmlFor="email" className="form-label">

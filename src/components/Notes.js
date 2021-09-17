@@ -4,12 +4,18 @@ import noteContext from "../context/notes/notecontext";
 import AddNote from "./AddNote";
 import Noteitems from "./Noteitems";
 import { useEffect, useRef } from "react";
+import { useHistory } from "react-router";
 
 const Notes = (props) => {
   const context = useContext(noteContext);
   const { notes, getNotes, editNote } = context;
+  let history = useHistory();
   useEffect(() => {
-    getNotes();
+    if (localStorage.getItem("token")) {
+      getNotes();
+    } else {
+      history.push("/login");
+    }
   }, []);
 
   const ref = useRef(null);
@@ -23,7 +29,6 @@ const Notes = (props) => {
       etag: currentNote.tag,
       id: currentNote._id,
     });
-    
   };
 
   const [note, setNote] = useState({
@@ -153,7 +158,12 @@ const Notes = (props) => {
         </div>
         {notes.map((note) => {
           return (
-            <Noteitems key={note._id} updateNote={updateNote} showAlert={props.showAlert} note={note} />
+            <Noteitems
+              key={note._id}
+              updateNote={updateNote}
+              showAlert={props.showAlert}
+              note={note}
+            />
           );
         })}
       </div>

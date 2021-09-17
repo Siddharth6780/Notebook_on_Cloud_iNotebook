@@ -11,7 +11,7 @@ const Signup = (props) => {
   let history = useHistory();
   const handleSummit = async (e) => {
     e.preventDefault();
-    const { name, email, password } = credentials;
+    const { name, email, password, epassword } = credentials;
     const response = await fetch("http://localhost:5000/api/auth/createuser", {
       method: "POST",
       headers: {
@@ -21,13 +21,13 @@ const Signup = (props) => {
     });
     const json = await response.json();
     console.log(json);
-    if (json.success === true) {
+    if (password === epassword && json.success === true) {
       //redirect
       localStorage.setItem("token", json.authtoken);
       history.push("/");
       props.showAlert("Account Created Successfully", "success");
     } else {
-        // alert("dcd");
+      // alert("dcd");
       props.showAlert("Invalid Credentials", "danger");
     }
   };
@@ -37,7 +37,10 @@ const Signup = (props) => {
   };
 
   return (
-    <div className="container my-3">
+    <div className="container mt-2">
+      <div className="heading_container d-flex justify-content-around">
+        <h2>Signup to use iNotebook</h2>
+      </div>
       <form onSubmit={handleSummit}>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">
@@ -66,6 +69,7 @@ const Signup = (props) => {
             id="email"
             aria-describedby="emailHelp"
           />
+          <div class="valid-feedback">Good! Your email address looks valid.</div>
         </div>
         <div className="mb-3">
           <label htmlFor="password" className="form-label">
@@ -86,6 +90,9 @@ const Signup = (props) => {
             Confirm Password
           </label>
           <input
+            onpaste="return false;"
+            ondrop="return false;"
+            autocomplete="off"
             minLength={5}
             required
             name="epassword"
