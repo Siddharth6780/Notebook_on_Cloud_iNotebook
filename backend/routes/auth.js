@@ -17,6 +17,9 @@ router.post(
     body("password", "Enter a Valid password").isLength({ min: 5 }),
   ],
   async (req, res) => {
+
+    let success = false;
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
@@ -78,7 +81,8 @@ router.post(
         },
       };
       const authtoken = jwt.sign(payload, JWT_SECREAT);
-      res.json({ authtoken });
+      success = true;
+      res.json({ success, authtoken });
     } catch (error) {
       res.status(500).send("Some Error occured");
     }
